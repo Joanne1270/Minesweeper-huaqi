@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.game-controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#difficulty {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+}
+
+#new-game-btn {
+    padding: 8px 20px;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#new-game-btn:hover {
+    background-color: #45a049;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.info-item {
+    background-color: #f8f8f8;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.game-board {
+    display: grid;
+    gap: 2px;
+    margin: 0 auto;
+    background-color: #ccc;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    background-color: #bdbdbd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px outset #fff;
+    user-select: none;
+}
+
+.cell.revealed {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+}
+
+.cell.mine {
+    background-color: #ff4444;
+}
+
+.cell.flagged::after {
+    content: "🚩";
+    font-size: 16px;
+}
+
+.cell.mine::after {
+    content: "💣";
+    font-size: 16px;
+}
+
+/* Number colors */
+.cell[data-count="1"] { color: blue; }
+.cell[data-count="2"] { color: green; }
+.cell[data-count="3"] { color: red; }
+.cell[data-count="4"] { color: darkblue; }
+.cell[data-count="5"] { color: brown; }
+.cell[data-count="6"] { color: teal; }
+.cell[data-count="7"] { color: black; }
+.cell[data-count="8"] { color: gray; }
+
+.game-message {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: 30px;
+}
+
+.game-message.win {
+    color: #4CAF50;
+}
+
+.game-message.lose {
+    color: #ff4444;
+}
