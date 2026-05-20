@@ -4,4 +4,4 @@ COPY minesweeper/pom.xml .
 COPY minesweeper/src ./src
 RUN apk add --no-cache maven
 RUN mvn clean package -DskipTests
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/minesweeper-0.0.1-SNAPSHOT.jar"]
