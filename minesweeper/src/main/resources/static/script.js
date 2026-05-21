@@ -161,28 +161,54 @@ function renderBoard(game) {
     board.style.gridTemplateColumns = `repeat(${game.cols}, 1fr)`;
     for (let i = 0; i < game.rows; i++) {
         for (let j = 0; j < game.cols; j++) {
-            const cell = game.board[i][j];
-            const div = document.createElement('div');
-            div.className = 'cell';
-            div.dataset.row = i;
-            div.dataset.col = j;
-            if (cell.revealed) {
-                div.classList.add('revealed');
-                if (cell.mine) {
-                    div.classList.add('mine');
-                } else if (cell.adjacentMines > 0) {
-                    div.innerText = cell.adjacentMines;
-                    div.dataset.count = cell.adjacentMines;
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.row = i;
+            cell.dataset.col = j;
+            const gameCell = game.board[i][j]; // 修正原代码的变量名笔误
+
+            // 渲染格子状态（和原来一致）
+            if (gameCell.revealed) {
+                cell.classList.add('revealed');
+                if (gameCell.mine) {
+                    cell.classList.add('mine');
+                } else if (gameCell.adjacentMines > 0) {
+                    cell.innerText = gameCell.adjacentMines;
+                    cell.dataset.count = gameCell.adjacentMines;
                 }
-            } else if (cell.flagged) {
-                div.classList.add('flagged');
+            } else if (gameCell.flagged) {
+                cell.classList.add('flagged');
             }
-            div.addEventListener('click', () => handleOpen(i, j));
-            div.addEventListener('contextmenu', e => {
-                e.preventDefault();
+
+            // 电脑端事件（完全不变）
+            cell.addEventListener('click', () => handleOpen(i, j));
+            cell.addEventListener('contextmenu', e => {
+                e.preventDefault(); // 阻止右键菜单
                 handleFlag(i, j);
             });
-            board.appendChild(div);
+
+            // --- 新增：手机端长按插旗、短按打开 ---
+            let pressTimer;
+            let pressStartTime;
+            cell.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // 阻止浏览器默认行为（如长按菜单）
+                pressStartTime = Date.now();
+                // 按下超过300ms触发插旗
+                pressTimer = setTimeout(() => {
+                    handleFlag(i, j);
+                }, 300);
+            });
+
+            cell.addEventListener('touchend', () => {
+                clearTimeout(pressTimer); // 清除长按定时器
+                const pressDuration = Date.now() - pressStartTime;
+                // 按下时间<300ms → 触发打开格子
+                if (pressDuration < 300) {
+                    handleOpen(i, j);
+                }
+            });
+
+            board.appendChild(cell);
         }
     }
 }
