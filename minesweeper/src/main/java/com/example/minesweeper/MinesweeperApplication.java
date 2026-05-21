@@ -9,4 +9,3 @@ public class MinesweeperApplication {
         SpringApplication.run(MinesweeperApplication.class, args);
     }
 }
-
