@@ -11,29 +11,32 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    padding: 10px;
 }
 
 .container {
     background-color: white;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 100%;
+    max-width: 100%;
 }
 
 h1 {
     color: #333;
-    margin-bottom: 20px;
-    font-size: 2.5rem;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
 }
 
 .game-controls {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     display: flex;
     gap: 10px;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 #difficulty {
@@ -62,25 +65,26 @@ h1 {
 .game-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-size: 1rem;
     font-weight: bold;
     color: #555;
 }
 
 .info-item {
     background-color: #f8f8f8;
-    padding: 8px 15px;
+    padding: 6px 12px;
     border-radius: 5px;
 }
 
 .game-board {
-    display: grid;
-    gap: 2px;
+    display: inline-grid;
+    gap: 1px;
     margin: 0 auto;
     background-color: #ccc;
-    padding: 2px;
+    padding: 1px;
     border-radius: 5px;
+    max-width: 100%;
 }
 
 .cell {
@@ -94,6 +98,7 @@ h1 {
     cursor: pointer;
     border: 2px outset #fff;
     user-select: none;
+    touch-action: manipulation;
 }
 
 .cell.revealed {
@@ -125,17 +130,175 @@ h1 {
 .cell[data-count="7"] { color: black; }
 .cell[data-count="8"] { color: gray; }
 
-.game-message {
-    margin-top: 20px;
-    font-size: 1.5rem;
+/* Windows风格弹窗 - 修复z-index问题 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999 !important; /* 强制最高层级 */
+}
+
+.modal {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    min-width: 300px;
+    max-width: 90%;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    color: #333;
+}
+
+.modal-stats {
+    text-align: left;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.modal-stats p {
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+.modal-btn {
+    padding: 12px 40px;
+    font-size: 1.1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
     font-weight: bold;
-    height: 30px;
 }
 
-.game-message.win {
+.modal-btn:hover {
+    background-color: #45a049;
+}
+
+.new-record {
     color: #4CAF50;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #f0f9f0;
+    border-radius: 6px;
+    font-size: 1.1rem;
 }
 
-.game-message.lose {
-    color: #ff4444;
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .cell {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+
+    .cell.flagged::after, .cell.mine::after {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .modal {
+        padding: 20px;
+        min-width: 250px;
+    }
+
+    .modal h2 {
+        font-size: 1.4rem;
+    }
+
+    .modal-stats {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cell {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+    }
+
+    .cell.flagged::after, .cell.mine::after {
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    .game-info {
+        font-size: 0.9rem;
+    }
+
+    .modal {
+        padding: 15px;
+    }
+
+    .modal h2 {
+        font-size: 1.2rem;
+    }
+
+    .modal-stats {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+
+    .modal-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+    }
+}
+
+/* 左下角版权文字 */
+.footer {
+    text-align: left;
+    margin-top: 12px;
+    padding-left: 8px;
+    font-size: 12px;
+    color: #999;
+    user-select: none;
+}
+
+/* 背景静态图样式 - 最前图层，不挡点击 */
+#bg-switch {
+    position: fixed;
+    /* 🔥 核心修改：z-index 设为 9999（足够高，超过所有游戏元素） */
+    z-index: 9999;
+    /* 关键：保留 pointer-events: none，点击会穿透图片，不影响操作 */
+    pointer-events: none;
+    opacity: 1.0;
+    width: 80px;
+    height: auto;
+
+    /* 位置保持不变，还是在 Mines Left 上方 */
+    top: 20%;
+    left: 5%;
+    transform: none;
 }
