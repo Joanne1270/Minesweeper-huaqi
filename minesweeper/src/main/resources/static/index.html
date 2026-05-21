@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweeper Game</title>
+    <title>Minesweeper</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<!-- 背景动态图容器（自动切换） -->
+<img id="bg-switch" src="/img/default.png" class="bg-img">
 <div class="container">
-    <h1>Minesweeper</h1>
+    <h1 style="font-size:26px; font-weight:bold;">Minesweeper</h1>
 
     <div class="game-controls">
         <select id="difficulty">
             <option value="easy">Easy (9x9, 10 mines)</option>
             <option value="medium">Medium (16x16, 40 mines)</option>
             <option value="hard">Hard (16x30, 99 mines)</option>
+            <option value="custom">Custom Mode</option>
         </select>
         <button id="new-game-btn">New Game</button>
+        <button id="clear-stats-btn" style="padding: 8px 12px; background:#ff4444; color:white; border:none; border-radius:5px; cursor:pointer;">Clear History</button>
     </div>
 
     <div class="game-info">
-        <div class="info-item">
-            <span>Mines left:</span>
-            <span id="mines-left">0</span>
-        </div>
-        <div class="info-item">
-            <span>Time:</span>
-            <span id="timer">0</span>s
-        </div>
+        <div class="info-item">💣 Mines Left: <span id="mines-left">10</span></div>
+        <div class="info-item">⏱️ Time: <span id="timer">0</span>s</div>
     </div>
 
     <div id="game-board" class="game-board"></div>
 
     <div id="game-message" class="game-message"></div>
+
+    <div class="footer">Good Luck! Love from 花祈 ^v^</div>
 </div>
 
 <script src="script.js"></script>
