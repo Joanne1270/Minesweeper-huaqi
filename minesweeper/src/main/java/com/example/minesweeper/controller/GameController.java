@@ -15,7 +15,12 @@ public class GameController {
 
     @PostMapping("/new")
     public ResponseEntity<Game> newGame(@RequestBody GameRequest request) {
-        Game game = gameService.createGame(request.getDifficulty());
+        Game game = gameService.createGame(
+                request.getDifficulty(),
+                request.getRows(),
+                request.getCols(),
+                request.getMines()
+        );
         return ResponseEntity.ok(game);
     }
 
@@ -28,7 +33,17 @@ public class GameController {
         return ResponseEntity.ok(game);
     }
 
-    @PostMapping("/{gameId}/reveal/{row}/{col}")
+    // 新增：撤回接口
+    @PostMapping("/undo/{gameId}")
+    public ResponseEntity<Game> undoGame(@PathVariable String gameId) {
+        Game game = gameService.undoGame(gameId);
+        if (game == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(game);
+    }
+
+    @PostMapping("/reveal/{gameId}/{row}/{col}")
     public ResponseEntity<Game> revealCell(@PathVariable String gameId,
                                            @PathVariable int row,
                                            @PathVariable int col) {
@@ -39,7 +54,7 @@ public class GameController {
         return ResponseEntity.ok(game);
     }
 
-    @PostMapping("/{gameId}/flag/{row}/{col}")
+    @PostMapping("/flag/{gameId}/{row}/{col}")
     public ResponseEntity<Game> toggleFlag(@PathVariable String gameId,
                                            @PathVariable int row,
                                            @PathVariable int col) {
